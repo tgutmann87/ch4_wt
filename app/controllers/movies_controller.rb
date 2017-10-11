@@ -5,7 +5,7 @@ class MoviesController < ApplicationController
        #params.require(:movie)
        #params[:movie].permit(:title,:rating,:release_date)
        # shortcut: params.require(:movie).permit(:title,:rating,:release_date)
-       @movie = Movie.create!(params[:movie])
+       @movie = Movie.create!(movie_params)
        flash[:notice] = "#{@movie.title} was successfuly created." 
        redirect_to movies_path
    end 
@@ -32,7 +32,7 @@ end
 
 def update 
     @movie = Movie.find params[:id]
-    @movie.update_attributes!(params[:movie])
+    @movie.update_attributes!(movie_params)
     flash[:notice] = "#{@movie.title} was successfuly updated."
     redirect_to movie_path(@movie)
 end 
@@ -43,4 +43,11 @@ def destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
 end 
+
+private
+
+  def movie_params
+    params.require(:movie).permit(:title, :rating, :description, :release_date)
+  end
+
 end 
